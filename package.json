@@ -19,6 +19,8 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.10",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "nodemailer": "^6.6.3",
+    "uuid": "^3.3.2"
   }
 }
