@@ -1,5 +1,6 @@
 const MediaModel = require('../model/Media.model');
 const S3 = require('../config/aws.s3.config');
+const { setCache } = require('../config/redis.config')
 
 exports.getAllMedia = async (req, res) => {
 	try {
@@ -10,6 +11,7 @@ exports.getAllMedia = async (req, res) => {
 			.sort({ createdAt: -1 });
 		const total = await MediaModel.find().countDocuments();
 		const pages = limit === undefined ? 1 : Math.ceil(total / limit);
+		setCache(req.url, JSON.stringify({ message: 'All Medias', total: total, pages, status: 200, response }), 600)
 		res.json({ message: 'All Medias', total: total, pages, status: 200, response });
 	} catch (error) {
 		res.json({ status: 404, message: error });
@@ -56,10 +58,12 @@ exports.createMedia = async (req, res) => {
 };
 
 exports.getSingleMedia = async (req, res) => {
-	await MediaModel.findById({ _id: req.params.mediaid }, (err, data) => {
+	await MediaModel.findById({ _id: req.params.mediaId }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
+			console.log('hello')
+			setCache(req.params.mediaId, JSON.stringify(data), 600)
 			res.json({ status: 200, data });
 		}
 	});
