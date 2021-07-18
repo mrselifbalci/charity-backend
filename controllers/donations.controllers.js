@@ -26,6 +26,46 @@ exports.getDonationById = async (req, res) => {
 	});
 };
 
+exports.getDonationsByUserId = async (req, res) => {
+	await DonationModel.find({ userId: req.params.userid }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
+exports.getDonationsByType = async (req, res) => {
+	await DonationModel.find({ type: req.params.type }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
+exports.getDonationsByPostcode = async (req, res) => {
+	await DonationModel.find({ postcode: req.params.postcode }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
+exports.getDonationsByCity = async (req, res) => {
+	await DonationModel.find({ city: req.params.city }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
 exports.create = async (req, res) => {
 	const {
 		userId,
