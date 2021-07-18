@@ -15,6 +15,7 @@ const messagesRouter = require('./routes/messages.routes');
 const mediasRouter = require('./routes/medias.routes');
 const notificationRouter = require('./routes/notification.routes');
 const staticPageRouter = require('./routes/staticPage.routes');
+const donationsRouter = require('./routes/donations.routes');
 
 //middlewares
 // const verifyToken = require('./auth/verifyToken');
@@ -43,8 +44,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(upload());
-app.use(cors()); 
-app.use('/', indexRouter);  
+app.use(cors());
+app.use('/', indexRouter);
 app.use('/', usersRouter);
 app.use('/', faqsRouter);
 app.use('/', commentsRouter);
@@ -53,8 +54,7 @@ app.use('/', messagesRouter);
 app.use('/', mediasRouter);
 app.use('/', notificationRouter);
 app.use('/', staticPageRouter);
-
-
+app.use('/', donationsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
