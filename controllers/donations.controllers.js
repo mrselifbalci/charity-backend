@@ -120,3 +120,19 @@ exports.create = async (req, res) => {
 		)
 		.catch((err) => res.json({ status: 404, message: err }));
 };
+
+exports.update = async (req, res) => {
+	await DonationModel.findByIdAndUpdate(
+		{ _id: req.params.id },
+		{ $set: req.body },
+		{ useFindAndModify: false, new: true }
+	)
+		.then((response) =>
+			res.json({
+				status: 200,
+				message: 'Donation is updated successfully',
+				response,
+			})
+		)
+		.catch((err) => res.json({ status: 404, message: err }));
+};

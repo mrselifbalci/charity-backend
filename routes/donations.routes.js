@@ -10,5 +10,6 @@ router.get('/donations/type/:type', donationControllers.getDonationsByType);
 router.get('/donations/postcode/:postcode', donationControllers.getDonationsByPostcode);
 router.get('/donations/city/:city', donationControllers.getDonationsByCity);
 router.post('/donations', donationControllers.create);
+router.put('/donations/:id', donationControllers.update);
 
 module.exports = router;
