@@ -23,47 +23,75 @@ exports.getDonationById = async (req, res) => {
 		} else {
 			res.json({ status: 200, data });
 		}
-	});
+	}).populate('userId', 'firstname lastname email');
 };
 
 exports.getDonationsByUserId = async (req, res) => {
+	const total = await DonationModel.find().countDocuments();
+	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
+	const { page, limit } = req.query;
 	await DonationModel.find({ userId: req.params.userid }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
-			res.json({ status: 200, data });
+			res.json({ total, pages, status: 200, data });
 		}
-	});
+	})
+		.limit(limit * 1)
+		.skip((page - 1) * limit)
+		.populate('userId', 'firstname lastname email')
+		.sort({ createdAt: -1 });
 };
 
 exports.getDonationsByType = async (req, res) => {
+	const total = await DonationModel.find().countDocuments();
+	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
+	const { page, limit } = req.query;
 	await DonationModel.find({ type: req.params.type }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
-			res.json({ status: 200, data });
+			res.json({ total, pages, status: 200, data });
 		}
-	});
+	})
+		.limit(limit * 1)
+		.skip((page - 1) * limit)
+		.populate('userId', 'firstname lastname email')
+		.sort({ createdAt: -1 });
 };
 
 exports.getDonationsByPostcode = async (req, res) => {
+	const total = await DonationModel.find().countDocuments();
+	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
+	const { page, limit } = req.query;
 	await DonationModel.find({ postcode: req.params.postcode }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
-			res.json({ status: 200, data });
+			res.json({ total, pages, status: 200, data });
 		}
-	});
+	})
+		.limit(limit * 1)
+		.skip((page - 1) * limit)
+		.populate('userId', 'firstname lastname email')
+		.sort({ createdAt: -1 });
 };
 
 exports.getDonationsByCity = async (req, res) => {
+	const total = await DonationModel.find().countDocuments();
+	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
+	const { page, limit } = req.query;
 	await DonationModel.find({ city: req.params.city }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
-			res.json({ status: 200, data });
+			res.json({ total, pages, status: 200, data });
 		}
-	});
+	})
+		.limit(limit * 1)
+		.skip((page - 1) * limit)
+		.populate('userId', 'firstname lastname email')
+		.sort({ createdAt: -1 });
 };
 
 exports.create = async (req, res) => {
@@ -131,6 +159,18 @@ exports.update = async (req, res) => {
 			res.json({
 				status: 200,
 				message: 'Donation is updated successfully',
+				response,
+			})
+		)
+		.catch((err) => res.json({ status: 404, message: err }));
+};
+
+exports.delete = async (req, res) => {
+	await DonationModel.findByIdAndDelete({ _id: req.params.id })
+		.then((response) =>
+			res.json({
+				status: 200,
+				message: 'Donation is deleted successfully',
 				response,
 			})
 		)

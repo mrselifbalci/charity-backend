@@ -11,5 +11,6 @@ router.get('/donations/postcode/:postcode', donationControllers.getDonationsByPo
 router.get('/donations/city/:city', donationControllers.getDonationsByCity);
 router.post('/donations', donationControllers.create);
 router.put('/donations/:id', donationControllers.update);
+router.delete('/donations/:id', donationControllers.delete);
 
 module.exports = router;
