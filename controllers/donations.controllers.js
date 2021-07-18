@@ -15,3 +15,58 @@ exports.getAll = async (req, res) => {
 		res.json({ status: 404, message: err });
 	}
 };
+
+exports.create = async (req, res) => {
+	const {
+		userId,
+		type,
+		phone,
+		address,
+		email,
+		city,
+		postcode,
+		comments,
+		instructions,
+		type_of_goods,
+		type_of_card,
+		card_number,
+		security_code,
+		amount,
+		expiration_date,
+		reason_to_join,
+		isActive,
+		isDeleted,
+	} = req.body;
+
+	const newDonation = await new DonationModel({
+		userId,
+		type,
+		phone,
+		address,
+		email,
+		city,
+		postcode,
+		comments,
+		instructions,
+		type_of_goods,
+		type_of_card,
+		card_number,
+		security_code,
+		amount,
+		expiration_date,
+		reason_to_join,
+		isActive,
+		isDeleted,
+	});
+
+	newDonation
+		.save()
+		.then((response) =>
+			res.json({
+				status: 200,
+				message: 'New donation is created successfully',
+				response,
+			})
+		)
+		.catch((err) => res.json({ status: 404, message: err }));
+};

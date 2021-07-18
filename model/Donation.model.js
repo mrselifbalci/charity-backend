@@ -7,6 +7,7 @@ const DonationSchema = new Schema({
 	type: String,
 	phone: String,
 	address: String,
+	email: String,
 	city: String,
 	postcode: String,
 	comments: Array,
