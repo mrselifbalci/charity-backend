@@ -16,8 +16,8 @@ const mediasRouter = require('./routes/medias.routes');
 const notificationRouter = require('./routes/notification.routes');
 const staticPageRouter = require('./routes/staticPage.routes');
 const donationsRouter = require('./routes/donations.routes');
-const slidersRouter=require('./routes/sliders.routes');
-const getInvolvedRouter =require('./routes/getinvolved.router')
+const slidersRouter = require('./routes/sliders.routes');
+const getInvolvedRouter = require('./routes/getinvolved.routes');
 
 //middlewares
 // const verifyToken = require('./auth/verifyToken');
