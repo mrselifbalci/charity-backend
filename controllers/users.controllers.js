@@ -7,7 +7,7 @@ const S3 = require('../config/aws.s3.config');
 
 exports.getAllUsers = async (req, res) => {
 	const { page = 1, limit } = req.query;
-	const total = await UserModel.find().count();
+	const total = await UserModel.find().countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
 	await UserModel.find()
 		.limit(limit * 1)
@@ -171,7 +171,7 @@ exports.updateUser = async (req, res) => {
 					$set: {
 						firstname,
 						lastname,
-						country:!req.body.country ? user.country : req.body.country,
+						country: !req.body.country ? user.country : req.body.country,
 						mediaId: user.mediaId,
 						isActive: !req.body.isActive ? true : req.body.isActive,
 						isDeleted: !req.body.isDeleted ? false : req.body.isDeleted,
