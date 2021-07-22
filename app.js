@@ -18,6 +18,7 @@ const staticPageRouter = require('./routes/staticPage.routes');
 const donationsRouter = require('./routes/donations.routes');
 const slidersRouter = require('./routes/sliders.routes');
 const getInvolvedRouter = require('./routes/getinvolved.routes');
+const newsRouter = require('./routes/news.routes');
 
 //middlewares
 // const verifyToken = require('./auth/verifyToken');
@@ -59,6 +60,7 @@ app.use('/', staticPageRouter);
 app.use('/', donationsRouter);
 app.use('/', slidersRouter);
 app.use('/', getInvolvedRouter);
+app.use('/', newsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
