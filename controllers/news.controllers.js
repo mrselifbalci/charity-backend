@@ -19,6 +19,34 @@ exports.getAll = async (req, res) => {
 	}
 };
 
+exports.getSingleNews = async (req, res) => {
+	await NewsModel.findOne({ _id: req.params.id }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
+exports.getNewsByTitle = async (req, res) => {
+	const { page, limit } = req.query;
+	const total = await NewsModel.find().countDocuments();
+	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
+	await NewsModel.find({ title: req.params.title }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ total, pages, status: 200, data });
+		}
+	})
+		.limit(limit * 1)
+		.skip((page - 1) * limit)
+		.populate('mediaId', 'url title alt')
+		.populate('quoteAuthorMedia', 'url title alt')
+		.sort({ createdAt: -1 });
+};
+
 exports.create = async (req, res) => {
 	const data1 = async (data1) => {
 		const newsMedia = await new MediaModel({
