@@ -29,11 +29,11 @@ exports.getSingleNews = async (req, res) => {
 	});
 };
 
-exports.getNewsByTitle = async (req, res) => {
+exports.getNewsByType = async (req, res) => {
 	const { page, limit } = req.query;
-	const total = await NewsModel.find().countDocuments();
+	const total = await NewsModel.find({ type: req.params.type }).countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-	await NewsModel.find({ title: req.params.title }, (err, data) => {
+	await NewsModel.find({ type: req.params.type }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
@@ -48,19 +48,19 @@ exports.getNewsByTitle = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-	const data1 = async (data1) => {
+	const dataMedia = async (data1) => {
 		const newsMedia = await new MediaModel({
 			title: 'news',
-			url: data1.Location || null,
+			url: dataMedia.Location || null,
 			mediaKey: data1.Key,
 			alt: req.body.altImage || null,
 		});
 		newsMedia.save();
 
-		const data2 = async (data2) => {
+		const dataQuoteAuthorMedia = async (data2) => {
 			const newsQuoteAuthorMedia = await new MediaModel({
 				title: 'news-quote-author',
-				url: data2.Location || null,
+				url: dataQuoteAuthorMedia.Location || null,
 				mediaKey: data2.Key,
 				alt: req.body.altQuote || null,
 			});
@@ -103,7 +103,7 @@ exports.create = async (req, res) => {
 				)
 				.catch((err) => res.json({ status: 404, message: err }));
 		};
-		await S3.uploadNewQuoteAuthorMedia(req, res, data2);
+		await S3.uploadNewQuoteAuthorMedia(req, res, dataQuoteAuthorMedia);
 	};
-	await S3.uploadNewMedia(req, res, data1);
+	await S3.uploadNewMedia(req, res, dataMedia);
 };
