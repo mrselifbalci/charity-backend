@@ -91,12 +91,12 @@ const updateMedia = (req, res, mediaKey, callback) => {
 	}
 };
 
-const updateBanner = (req, res, mediaKey, callback) => {
+const updateQuoteAuthorMedia = (req, res, mediaKey, callback) => {
 	if (req.files) {
 		const params = {
 			Bucket: Bucket_Name,
 			Key: mediaKey,
-			Body: req.files ? req.files.bannerId.data : null,
+			Body: req.files ? req.files.quoteAuthorMedia.data : null,
 			ContentType: 'image/JPG',
 		};
 		S3.upload(params, (err, data) => {
@@ -140,6 +140,6 @@ module.exports = {
 	uploadNewBanner,
 	uploadNewQuoteAuthorMedia,
 	updateMedia,
-	updateBanner,
+	updateQuoteAuthorMedia,
 	deleteMedia,
 };

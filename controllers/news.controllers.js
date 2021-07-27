@@ -107,3 +107,93 @@ exports.create = async (req, res) => {
 	};
 	await S3.uploadNewMedia(req, res, dataMedia);
 };
+
+exports.updateNews = async (req, res) => {
+	await NewsModel.findById({ _id: req.params.id })
+		.then(async (news) => {
+			await MediaModel.findById({ _id: news.mediaId }).then(async (media) => {
+				const data = async (data) => {
+					await MediaModel.findByIdAndUpdate(
+						{ _id: news.mediaId },
+						{
+							$set: {
+								url: data.Location || null,
+								title: 'news',
+								mediaKey: data.Key,
+								alt: req.body.altImage || null,
+							},
+						},
+						{ useFindAndModify: false, new: true }
+					).catch((err) => res.json({ status: 404, message: err }));
+				};
+				await S3.updateMedia(req, res, media.mediaKey, data);
+			});
+			await MediaModel.findById({ _id: news.quoteAuthorMedia })
+				.then(async (quoteauthormedia) => {
+					const data = async (data) => {
+						await MediaModel.findByIdAndUpdate(
+							{ _id: news.quoteauthormedia },
+							{
+								$set: {
+									url: data.Location || null,
+									title: 'news-quote-author',
+									mediaKey: data.Key,
+									alt: req.body.altQuote || null,
+								},
+							},
+							{ useFindAndModify: false, new: true }
+						);
+					};
+					await S3.updateQuoteAuthorMedia(
+						req,
+						res,
+						quoteauthormedia.mediaKey,
+						data
+					);
+				})
+				.catch((err) => res.json({ status: 404, message: err }));
+
+			const { type, title, quoteAuthor, content, altImage, altQuote } = req.body;
+
+			await NewsModel.findByIdAndUpdate(
+				{ _id: req.params.id },
+				{
+					$set: {
+						type,
+						title,
+						content,
+						quoteAuthor,
+						mediaId: news.mediaId,
+						quoteAuthorMedia: news.quoteAuthorMedia,
+						altImage,
+						altQuote,
+						isActive: req.body.isActive
+							? req.body.isActive
+							: trailer.isActive,
+						isDeleted: req.body.isDeleted
+							? req.body.isDeleted
+							: trailer.isDeleted,
+					},
+				},
+				{ useFindAndModify: false, new: true }
+			)
+				.then((data) =>
+					res.json({
+						status: true,
+						message: 'News is updated successfully',
+						data,
+					})
+				)
+
+				.catch((err) => res.json({ message: err, status: 404 }));
+		})
+		.catch((err) => res.json({ message: err, status: 404 }));
+};
+
+exports.removeNews = async (req, res) => {
+	await NewsModel.findByIdAndDelete({ _id: req.params.id })
+		.then((response) =>
+			res.json({ status: 200, messages: 'News is deleted successfully', response })
+		)
+		.catch((err) => res.json({ status: 404, message: err }));
+};
