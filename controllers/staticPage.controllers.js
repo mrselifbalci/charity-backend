@@ -7,7 +7,7 @@ exports.getAll = async (req, res) => {
 		const { page = 1, limit } = req.query;
 		const response = await StaticPageModel.find()
 			.limit(limit * 1)
-			.skip((page - 1) * limit) 
+			.skip((page - 1) * limit)
 			.sort({ createdAt: -1 })
 			.populate('mediaId', 'url title alt');
 		const total = await StaticPageModel.find().countDocuments();

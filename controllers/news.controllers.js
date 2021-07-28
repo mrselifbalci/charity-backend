@@ -132,7 +132,7 @@ exports.updateNews = async (req, res) => {
 				.then(async (quoteauthormedia) => {
 					const data = async (data) => {
 						await MediaModel.findByIdAndUpdate(
-							{ _id: news.quoteauthormedia },
+							{ _id: news.quoteAuthorMedia },
 							{
 								$set: {
 									url: data.Location || null,
@@ -167,12 +167,8 @@ exports.updateNews = async (req, res) => {
 						quoteAuthorMedia: news.quoteAuthorMedia,
 						altImage,
 						altQuote,
-						isActive: req.body.isActive
-							? req.body.isActive
-							: trailer.isActive,
-						isDeleted: req.body.isDeleted
-							? req.body.isDeleted
-							: trailer.isDeleted,
+						isActive: !req.body.isActive ? true : req.body.isActive,
+						isDeleted: !req.body.isDeleted ? false : req.body.isDeleted,
 					},
 				},
 				{ useFindAndModify: false, new: true }
@@ -185,9 +181,9 @@ exports.updateNews = async (req, res) => {
 					})
 				)
 
-				.catch((err) => res.json({ message: err, status: 404 }));
+				.catch((err) => res.json({ message: err, status: 4040 }));
 		})
-		.catch((err) => res.json({ message: err, status: 404 }));
+		.catch((err) => res.json({ message: err, status: 4041 }));
 };
 
 exports.removeNews = async (req, res) => {
