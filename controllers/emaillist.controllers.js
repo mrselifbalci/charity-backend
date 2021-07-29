@@ -79,7 +79,11 @@ exports.create = async (req, res) => {
 
 exports.updateList = async (req, res) => {
 	await emailListModel
-		.findByIdAndUpdate({ _id: req.params.id })
+		.findByIdAndUpdate(
+			{ _id: req.params.id },
+			{ $set: req.body },
+			{ useFindAndModify: false, new: true }
+		)
 		.then((response) =>
 			res.json({
 				status: 200,

@@ -7,6 +7,7 @@ router.get('/emaillist', emailListControllers.getAll);
 router.get('/emaillist/:id', emailListControllers.getEmailListById);
 router.post('/emaillist', emailListControllers.create);
 router.post('/emaillist/filter', emailListControllers.getWithQuery);
-router.update('/emaillist/:id', emailListControllers.updateList);
+router.put('/emaillist/:id', emailListControllers.updateList);
+router.delete('/emaillist/:id', emailListControllers.removeList);
 
 module.exports = router;
