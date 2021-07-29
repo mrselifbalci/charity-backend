@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const SliderSchema = new Schema(
 	{
-        type:Array,
+        type:String,
 		title: { type: String },
         mediaId: { type: mongoose.Types.ObjectId, ref: 'media' },
         quote:String,
@@ -12,8 +12,8 @@ const SliderSchema = new Schema(
 		isActive: { type: Boolean, default: true },
 		isDeleted: { type: Boolean, default: false },
 		
-	},
-
+	}, 
+ 
 	{ timestamps: true }
 );
 
