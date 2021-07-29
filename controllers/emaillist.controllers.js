@@ -77,13 +77,26 @@ exports.create = async (req, res) => {
 		.catch((err) => res.json({ status: 404, message: err }));
 };
 
-exports.update = async (req, res) => {
+exports.updateList = async (req, res) => {
 	await emailListModel
 		.findByIdAndUpdate({ _id: req.params.id })
 		.then((response) =>
 			res.json({
 				status: 200,
 				message: 'Email list is updated successfully',
+				response,
+			})
+		)
+		.catch((err) => res.json({ status: 404, message: err }));
+};
+
+exports.removeList = async (req, res) => {
+	await emailListModel
+		.findByIdAndDelete({ _id: req.params.id })
+		.then((response) =>
+			res.json({
+				status: 200,
+				message: 'Email list is deleted successfully',
 				response,
 			})
 		)
