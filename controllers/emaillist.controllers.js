@@ -16,6 +16,16 @@ exports.getAll = async (req, res) => {
 	}
 };
 
+exports.getEmailListById = async (req, res) => {
+	await emailListModel.findOne({ id: req.params.id }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
 exports.getWithQuery = async (req, res) => {
 	try {
 		const query =
