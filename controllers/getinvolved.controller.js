@@ -194,3 +194,28 @@ exports.updateGetInvolved = async (req, res) => {
 			.catch((err) => res.json({ status: 404, message: err }));
 	}
 };
+
+
+exports.deleteGetInvolved = async (req, res) => {
+	await GetInvolvedModel.findById({ _id: req.params.id })
+		.then(async (involved) => {
+			await MediaModel.findByIdAndUpdate(
+				{ _id: involved.mediaId },
+				{
+					$set: { isActive: false },
+				},
+				{ useFindAndModify: false, new: true }
+			);
+
+			await GetInvolvedModel.findByIdAndDelete({ _id: req.params.id })
+				.then((data) =>
+					res.json({
+						status: 200,
+						message: 'Getinvolved is deleted successfully',
+						data,
+					})
+				)
+				.catch((err) => res.json({ status: 404, message: err }));
+		})
+		.catch((err) => res.json({ status: 404, message: err }));
+};

@@ -7,6 +7,6 @@ const getInvolvedControllers = require('../controllers/getinvolved.controller');
 router.get('/getinvolved',getInvolvedControllers.getAll);
 router.post('/getinvolved',getInvolvedControllers.create);
 router.put('/getinvolved/:id',getInvolvedControllers.updateGetInvolved);
-// router.delete('/getinvolved/:id',getInvolvedControllers.deleteSlider);
+router.delete('/getinvolved/:id',getInvolvedControllers.deleteGetInvolved);
 
 module.exports = router;
