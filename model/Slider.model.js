@@ -8,7 +8,7 @@ const SliderSchema = new Schema(
         mediaId: { type: mongoose.Types.ObjectId, ref: 'media' },
         quote:String,
         quoteAuthor:String,
-        quoteAuthorMediaId: { type: mongoose.Types.ObjectId, ref: 'media' },
+        quoteAuthorMedia: { type: mongoose.Types.ObjectId, ref: 'media' },
 		isActive: { type: Boolean, default: true },
 		isDeleted: { type: Boolean, default: false },
 		
