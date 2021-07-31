@@ -5,12 +5,12 @@ exports.getAll = async (req, res) => {
 		const { page, limit } = req.query;
 		const total = await DonationModel.find().countDocuments();
 		const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-		const response = await DonationModel.find()
+		const data = await DonationModel.find()
 			.limit(limit * 1)
 			.skip((page - 1) * limit)
-			.sort({ createdAt: -1 })
-			.populate('userId', 'firstname lastname email');
-		res.json({ total, pages, status: 200, response });
+			.populate('userId', 'firstname lastname email')
+			.sort({ createdAt: -1 });
+		res.json({ total, pages, status: 200, data });
 	} catch (error) {
 		res.json({ status: 404, message: err });
 	}
@@ -27,9 +27,10 @@ exports.getDonationById = async (req, res) => {
 };
 
 exports.getDonationsByUserId = async (req, res) => {
+	const { page, limit } = req.query;
 	const total = await DonationModel.find().countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-	const { page, limit } = req.query;
+
 	await DonationModel.find({ userId: req.params.userid }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
@@ -44,9 +45,10 @@ exports.getDonationsByUserId = async (req, res) => {
 };
 
 exports.getDonationsByType = async (req, res) => {
+	const { page, limit } = req.query;
 	const total = await DonationModel.find().countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-	const { page, limit } = req.query;
+
 	await DonationModel.find({ type: req.params.type }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
@@ -61,9 +63,10 @@ exports.getDonationsByType = async (req, res) => {
 };
 
 exports.getDonationsByPostcode = async (req, res) => {
+	const { page, limit } = req.query;
 	const total = await DonationModel.find().countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-	const { page, limit } = req.query;
+
 	await DonationModel.find({ postcode: req.params.postcode }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
@@ -78,9 +81,10 @@ exports.getDonationsByPostcode = async (req, res) => {
 };
 
 exports.getDonationsByCity = async (req, res) => {
+	const { page, limit } = req.query;
 	const total = await DonationModel.find().countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-	const { page, limit } = req.query;
+
 	await DonationModel.find({ city: req.params.city }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
@@ -100,7 +104,6 @@ exports.create = async (req, res) => {
 		type,
 		phone,
 		address,
-		email,
 		city,
 		postcode,
 		comments,
@@ -121,7 +124,6 @@ exports.create = async (req, res) => {
 		type,
 		phone,
 		address,
-		email,
 		city,
 		postcode,
 		comments,

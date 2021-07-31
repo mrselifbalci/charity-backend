@@ -41,6 +41,21 @@ const uploadNewBanner = (req, res, callback) => {
 	});
 };
 
+const uploadNewQuoteAuthorMedia = (req, res, callback) => {
+	const file = __dirname + '/noImage.jpg';
+	const data = fs.readFileSync(file);
+	const params = {
+		Bucket: Bucket_Name,
+		Key: uuid(),
+		Body: req.files ? req.files.quoteAuthorMedia.data : data,
+		ContentType: 'image/JPG',
+	};
+	S3.upload(params, (err, data) => {
+		if (err) return res.json(err);
+		callback(data);
+	});
+};
+
 const updateMedia = (req, res, mediaKey, callback) => {
 	if (req.files) {
 		const params = {
@@ -76,12 +91,12 @@ const updateMedia = (req, res, mediaKey, callback) => {
 	}
 };
 
-const updateBanner = (req, res, mediaKey, callback) => {
+const updateQuoteAuthorMedia = (req, res, mediaKey, callback) => {
 	if (req.files) {
 		const params = {
 			Bucket: Bucket_Name,
 			Key: mediaKey,
-			Body: req.files ? req.files.bannerId.data : null,
+			Body: req.files ? req.files.quoteAuthorMedia.data : null,
 			ContentType: 'image/JPG',
 		};
 		S3.upload(params, (err, data) => {
@@ -123,7 +138,8 @@ const deleteMedia = (mediaKey) => {
 module.exports = {
 	uploadNewMedia,
 	uploadNewBanner,
+	uploadNewQuoteAuthorMedia,
 	updateMedia,
-	updateBanner,
+	updateQuoteAuthorMedia,
 	deleteMedia,
 };
