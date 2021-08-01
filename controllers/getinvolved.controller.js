@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const GetInvolvedModel = require('../model/GetInvolved.model');
+const GetInvolvedModel = require('../model/Getinvolved.model');
 const MediaModel = require('../model/Media.model');
 const S3 = require('../config/aws.s3.config');
 
