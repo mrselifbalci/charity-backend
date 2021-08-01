@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const CommentsSchema = new Schema(
 	{
 		userId: { type: Schema.Types.ObjectId, ref: 'user' },
-		title: { type: String, required: true },
-		content: { type: String, required: true },
+		title: { type: String },
+		content: { type: String},
 		listId: { type: Schema.Types.ObjectId, ref: 'list' },
 		isActive: { type: Boolean, default: true },
 		reasonToBlock:{ type: String, default: '' },
