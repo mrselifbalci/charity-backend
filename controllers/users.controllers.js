@@ -152,7 +152,7 @@ exports.login = async (req, res) => {
 							res.json({ status: false, message: 'Wrong password' });
 						}
 		}
-	})
+	}).populate('mediaId', 'title url alt')
 };
 
 exports.updateUser = async (req, res) => {
