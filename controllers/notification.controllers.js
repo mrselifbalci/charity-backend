@@ -8,7 +8,7 @@ exports.getAllNotifications = async (req, res) => {
 			.limit(limit * 1)
 			.skip((page - 1) * limit)
 			.sort({ createdAt: -1 });
-		const total = await NotificationModel.find().count();
+		const total = await NotificationModel.find().countDocuments();
 		const pages = limit === undefined ? 1 : Math.ceil(total / limit);
 		res.json({ total: total, pages, status: 200, response });
 	} catch (error) {
