@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const MediaSchema = new Schema(
 	{
-		url: { type: String },
+		url: String,
 		title: { type: String },
 		alt: { type: String },
 		altImage: { type: String },
