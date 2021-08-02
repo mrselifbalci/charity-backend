@@ -115,33 +115,44 @@ exports.createUser = async (req, res) => {
 
 exports.login = async (req, res) => {
 	const { email, password } = req.body;
+	if(!email) {
+		return res.json({status:400, message:'Enter a email address.'})
+	}
 
-	await UserModel.findOne({ email: email })
-		.then(async (data) => {
+	if(!password) {
+		return res.json({status:400, message:'Enter your password.'})
+	}
+
+	await UserModel.findOne({email}, async (err, data) => {
+		if(err) {
+			res.json({message: err})
+		} else if(data === null) {
+			res.json({message: 'Email does not exist.'})
+		} else {
 			if (await bcrypt.compare(password, data.password)) {
-				const token = jwt.sign(
-					{ name: email, role: data.role },
-					process.env.ACCESS_TOKEN_SECRET,
-					{ expiresIn: '1h' }
-				);
-				res.json({
-					status: true,
-					firstname: data.firstname,
-					lastname: data.lastname,
-					email: data.email,
-					country: country,
-					isActive: isActive,
-					isDeleted: isDeleted,
-					id: data._id,
-					mediaId: data.mediaId,
-					role: data.role,
-					token: token,
-				});
-			} else {
-				res.json({ status: false, message: 'Wrong password' });
-			}
-		})
-		.catch((err) => res.json({ message: 'Email does not exist' }));
+							const token = jwt.sign(
+								{ name: email, role: data.role },
+								process.env.ACCESS_TOKEN_SECRET,
+								{ expiresIn: '1h' }
+							);
+							res.json({
+								status: true,
+								firstname: data.firstname,
+								lastname: data.lastname,
+								email: data.email,
+								country: data.country,
+								isActive: data.isActive,
+								isDeleted: data.isDeleted,
+								id: data._id,
+								mediaId: data.mediaId,
+								role: data.role,
+								token: token
+							});
+						} else {
+							res.json({ status: false, message: 'Wrong password' });
+						}
+		}
+	}).populate('mediaId', 'title url alt')
 };
 
 exports.updateUser = async (req, res) => {
