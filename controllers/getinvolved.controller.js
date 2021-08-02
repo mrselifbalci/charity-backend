@@ -24,7 +24,7 @@ exports.create = async (req, res) => {
 		const data = async (data) => {
 			const newImage = await new MediaModel({
 				url: data.Location || null,
-				title: 'get-involved',
+				title: req.body.title,
 				mediaKey: data.Key,
 				alt: req.body.name,
 			});
@@ -79,7 +79,7 @@ exports.create = async (req, res) => {
 		const data = async (data) => {
 			const newImage = await new MediaModel({
 				url: data.Location || null,
-				title: 'get-involved',
+				title: req.body.title,
 				mediaKey: data.Key,
 				alt: req.body.alt || null,
 			});
