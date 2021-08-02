@@ -11,6 +11,8 @@ const NewsSchema = new Schema({
 	},
 	quote: String,
 	quoteAuthor: String,
+	quoteAuthorMedia: {	type: Schema.Types.ObjectId,ref: 'media',required: 'Media for author quote must be uploaded',},
+	content: {type:String, max:100},
 	quoteAuthorMedia: {
 		type: Schema.Types.ObjectId,
 		ref: 'media',
