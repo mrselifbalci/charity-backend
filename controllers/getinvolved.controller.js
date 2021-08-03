@@ -4,7 +4,7 @@ const MediaModel = require('../model/Media.model');
 const S3 = require('../config/aws.s3.config');
 
 exports.getAll = async (req, res) => {
-	try {
+	try { 
 		const { page = 1, limit } = req.query;
 		const response = await GetInvolvedModel.find()
 			.limit(limit * 1)
@@ -114,7 +114,15 @@ exports.create = async (req, res) => {
 		await S3.uploadNewMedia(req, res, data);
 	}
 };
-
+exports.getSingleInvolve = async (req, res) => {
+	await GetinvolvedModel.findById({ _id: req.params.id }, (err, data) => {
+		if (err) {
+			res.json({ status: false, message: err });
+		} else {
+			res.json({ data });
+		}
+	})
+};
 exports.updateGetInvolved = async (req, res) => {
 	if (req.files) {
 		await GetInvolvedModel.findById({ _id: req.params.id })
