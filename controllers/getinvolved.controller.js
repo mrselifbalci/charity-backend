@@ -39,6 +39,7 @@ exports.create = async (req, res) => {
 				mediaId: newImage._id,
                 moreInfoLinkText,
                 moreInfoContent,
+				buttonText,
 				isActive,
 				isDeleted,
 			});
@@ -62,6 +63,7 @@ exports.create = async (req, res) => {
 			mediaId,
             moreInfoLinkText,
             moreInfoContent,
+			buttonText,
 			isActive,
 			isDeleted,
 		});
@@ -94,6 +96,7 @@ exports.create = async (req, res) => {
 				mediaId: newImage._id,
                 moreInfoLinkText,
                 moreInfoContent,
+				buttonText,
 				isActive,
 				isDeleted,
 			});
@@ -145,6 +148,7 @@ exports.updateGetInvolved = async (req, res) => {
 							content,
                             moreInfoLinkText,
                             moreInfoContent,
+							buttonText,
 							mediaId: involved.mediaId,
 							isActive: !req.body.isActive ? true : req.body.isActive,
 							isDeleted: !req.body.isDeleted ? false : req.body.isDeleted,
@@ -175,6 +179,7 @@ exports.updateGetInvolved = async (req, res) => {
 							content,
                             moreInfoLinkText,
                             moreInfoContent,
+							buttonText,
 							mediaId: !mediaId ? staticpage.mediaId : mediaId,
 							isActive: !req.body.isActive ? true : req.body.isActive,
 							isDeleted: !req.body.isDeleted ? false : req.body.isDeleted,
