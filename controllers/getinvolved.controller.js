@@ -122,6 +122,7 @@ exports.getSingleInvolve = async (req, res) => {
 			res.json({ data });
 		}
 	})
+	.populate('mediaId', 'url title alt');
 };
 exports.updateGetInvolved = async (req, res) => {
 	if (req.files) {
@@ -146,7 +147,7 @@ exports.updateGetInvolved = async (req, res) => {
 						await S3.updateMedia(req, res, media.mediaKey, data);
 					}
 				);
-				const { title, content,moreInfoLinkText,moreInfoContent } = req.body;
+				const { title, content,moreInfoLinkText,moreInfoContent,buttonText } = req.body;
 
 				await GetInvolvedModel.findByIdAndUpdate(
 					{ _id: req.params.id },
