@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
 
 			newImage.save();
 
-			const { title, content,moreInfoLinkText,moreInfoContent, isActive, isDeleted } = req.body;
+			const { title, content,moreInfoLinkText,moreInfoContent, isActive, isDeleted,buttonText } = req.body;
 
 			const newInvolved = await new GetInvolvedModel({
 				title,
@@ -55,7 +55,7 @@ exports.create = async (req, res) => {
 		};
 		await S3.uploadNewMedia(req, res, data);
 	} else if (req.body.mediaId) {
-		const { title, content,  moreInfoLinkText,moreInfoContent,isActive, isDeleted, mediaId } = req.body;
+		const { title, content,  moreInfoLinkText,moreInfoContent,isActive, isDeleted, mediaId,buttonText } = req.body;
 
 		const newInvolved = await new GetInvolvedModel({
 			title,
@@ -88,7 +88,7 @@ exports.create = async (req, res) => {
 
 			newImage.save();
 
-			const { title, content, moreInfoLinkText,moreInfoContent, isActive, isDeleted } = req.body;
+			const { title, content, moreInfoLinkText,moreInfoContent, isActive, isDeleted,buttonText } = req.body;
 
 			const newPage = await new StaticPageModel({
 				title,
@@ -169,7 +169,7 @@ exports.updateGetInvolved = async (req, res) => {
 	} else {
 		await GetInvolvedModel.findById({ _id: req.params.id })
 			.then(async (involved) => {
-				const { title, content, mediaId,moreInfoLinkText,moreInfoContent } = req.body;
+				const { title, content, mediaId,moreInfoLinkText,moreInfoContent,buttonText } = req.body;
 
 				await GetInvolvedModel.findByIdAndUpdate(
 					{ _id: req.params.id },
