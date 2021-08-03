@@ -51,7 +51,7 @@ exports.create = async (req, res) => {
 	const dataMedia = async (data1) => {
 		const newsMedia = await new MediaModel({
 			title: 'news',
-			url: dataMedia.Location || null,
+			url: data1.Location || null,
 			mediaKey: data1.Key,
 			alt: req.body.altImage || null,
 		});
@@ -60,7 +60,7 @@ exports.create = async (req, res) => {
 		const dataQuoteAuthorMedia = async (data2) => {
 			const newsQuoteAuthorMedia = await new MediaModel({
 				title: 'news-quote-author',
-				url: dataQuoteAuthorMedia.Location || null,
+				url: data2.Location || null,
 				mediaKey: data2.Key,
 				alt: req.body.altQuote || null,
 			});
@@ -73,6 +73,7 @@ exports.create = async (req, res) => {
 				quote,
 				quoteAuthor,
 				content,
+				summary,
 				altImage,
 				altQuote,
 				isActive,
@@ -87,6 +88,7 @@ exports.create = async (req, res) => {
 				mediaId: newsMedia._id,
 				quoteAuthorMedia: newsQuoteAuthorMedia._id,
 				content,
+				summary,
 				altImage,
 				altQuote,
 				isActive,
@@ -153,7 +155,8 @@ exports.updateNews = async (req, res) => {
 				})
 				.catch((err) => res.json({ status: 404, message: err }));
 
-			const { type, title, quoteAuthor, content, altImage, altQuote } = req.body;
+			const { type, title, quoteAuthor, content, summary, altImage, altQuote } =
+				req.body;
 
 			await NewsModel.findByIdAndUpdate(
 				{ _id: req.params.id },
@@ -162,6 +165,7 @@ exports.updateNews = async (req, res) => {
 						type,
 						title,
 						content,
+						summary,
 						quoteAuthor,
 						mediaId: news.mediaId,
 						quoteAuthorMedia: news.quoteAuthorMedia,
