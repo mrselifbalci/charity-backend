@@ -115,7 +115,7 @@ exports.create = async (req, res) => {
 	}
 };
 exports.getSingleInvolve = async (req, res) => {
-	await GetinvolvedModel.findById({ _id: req.params.id }, (err, data) => {
+	await GetInvolvedModel.findById({ _id: req.params.id }, (err, data) => {
 		if (err) {
 			res.json({ status: false, message: err });
 		} else {
