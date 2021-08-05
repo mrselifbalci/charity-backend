@@ -8,7 +8,8 @@ const GetInvolvedSchema = new Schema(
         mediaId: { type: mongoose.Types.ObjectId, ref: 'media' },
         content:String,
         moreInfoLinkText:String,
-        moreInfoContent:String,     
+        moreInfoContent:String,
+		buttonText:String,     
 		isActive: { type: Boolean, default: true },
 		isDeleted: { type: Boolean, default: false },
 		

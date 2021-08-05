@@ -4,7 +4,7 @@ const MediaModel = require('../model/Media.model');
 const S3 = require('../config/aws.s3.config');
 
 exports.getAll = async (req, res) => {
-	try {
+	try { 
 		const { page = 1, limit } = req.query;
 		const response = await GetInvolvedModel.find()
 			.limit(limit * 1)
@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
 
 			newImage.save();
 
-			const { title, content,moreInfoLinkText,moreInfoContent, isActive, isDeleted } = req.body;
+			const { title, content,moreInfoLinkText,moreInfoContent, isActive, isDeleted,buttonText } = req.body;
 
 			const newInvolved = await new GetInvolvedModel({
 				title,
@@ -39,6 +39,7 @@ exports.create = async (req, res) => {
 				mediaId: newImage._id,
                 moreInfoLinkText,
                 moreInfoContent,
+				buttonText,
 				isActive,
 				isDeleted,
 			});
@@ -54,7 +55,7 @@ exports.create = async (req, res) => {
 		};
 		await S3.uploadNewMedia(req, res, data);
 	} else if (req.body.mediaId) {
-		const { title, content,  moreInfoLinkText,moreInfoContent,isActive, isDeleted, mediaId } = req.body;
+		const { title, content,  moreInfoLinkText,moreInfoContent,isActive, isDeleted, mediaId,buttonText } = req.body;
 
 		const newInvolved = await new GetInvolvedModel({
 			title,
@@ -62,6 +63,7 @@ exports.create = async (req, res) => {
 			mediaId,
             moreInfoLinkText,
             moreInfoContent,
+			buttonText,
 			isActive,
 			isDeleted,
 		});
@@ -86,7 +88,7 @@ exports.create = async (req, res) => {
 
 			newImage.save();
 
-			const { title, content, moreInfoLinkText,moreInfoContent, isActive, isDeleted } = req.body;
+			const { title, content, moreInfoLinkText,moreInfoContent, isActive, isDeleted,buttonText } = req.body;
 
 			const newPage = await new StaticPageModel({
 				title,
@@ -94,6 +96,7 @@ exports.create = async (req, res) => {
 				mediaId: newImage._id,
                 moreInfoLinkText,
                 moreInfoContent,
+				buttonText,
 				isActive,
 				isDeleted,
 			});
@@ -111,7 +114,16 @@ exports.create = async (req, res) => {
 		await S3.uploadNewMedia(req, res, data);
 	}
 };
-
+exports.getSingleInvolve = async (req, res) => {
+	await GetInvolvedModel.findById({ _id: req.params.id }, (err, data) => {
+		if (err) {
+			res.json({ status: false, message: err });
+		} else {
+			res.json({ data });
+		}
+	})
+	.populate('mediaId', 'url title alt');
+};
 exports.updateGetInvolved = async (req, res) => {
 	if (req.files) {
 		await GetInvolvedModel.findById({ _id: req.params.id })
@@ -135,7 +147,7 @@ exports.updateGetInvolved = async (req, res) => {
 						await S3.updateMedia(req, res, media.mediaKey, data);
 					}
 				);
-				const { title, content,moreInfoLinkText,moreInfoContent } = req.body;
+				const { title, content,moreInfoLinkText,moreInfoContent,buttonText } = req.body;
 
 				await GetInvolvedModel.findByIdAndUpdate(
 					{ _id: req.params.id },
@@ -145,6 +157,7 @@ exports.updateGetInvolved = async (req, res) => {
 							content,
                             moreInfoLinkText,
                             moreInfoContent,
+							buttonText,
 							mediaId: involved.mediaId,
 							isActive: !req.body.isActive ? true : req.body.isActive,
 							isDeleted: !req.body.isDeleted ? false : req.body.isDeleted,
@@ -165,7 +178,7 @@ exports.updateGetInvolved = async (req, res) => {
 	} else {
 		await GetInvolvedModel.findById({ _id: req.params.id })
 			.then(async (involved) => {
-				const { title, content, mediaId,moreInfoLinkText,moreInfoContent } = req.body;
+				const { title, content, mediaId,moreInfoLinkText,moreInfoContent,buttonText } = req.body;
 
 				await GetInvolvedModel.findByIdAndUpdate(
 					{ _id: req.params.id },
@@ -175,6 +188,7 @@ exports.updateGetInvolved = async (req, res) => {
 							content,
                             moreInfoLinkText,
                             moreInfoContent,
+							buttonText,
 							mediaId: !mediaId ? staticpage.mediaId : mediaId,
 							isActive: !req.body.isActive ? true : req.body.isActive,
 							isDeleted: !req.body.isDeleted ? false : req.body.isDeleted,
