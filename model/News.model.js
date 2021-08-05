@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const NewsSchema = new Schema(
 	{
-		type: String,
+		type: { type: String },
 		title: String,
 		mediaId: {
 			type: Schema.Types.ObjectId,
