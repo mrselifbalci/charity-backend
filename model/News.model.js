@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const NewsSchema = new Schema(
 	{
 		type: { type: String },
-		title: String,
+		title: { type: String },
 		mediaId: {
 			type: Schema.Types.ObjectId,
 			ref: 'media',
