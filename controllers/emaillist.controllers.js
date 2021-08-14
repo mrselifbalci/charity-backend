@@ -26,30 +26,14 @@ exports.getEmailListById = async (req, res) => {
 	});
 };
 
-exports.getWithQuery = async (req, res) => {
-	try {
-		const query =
-			typeof req.body.query === 'string'
-				? JSON.parse(req.body.query)
-				: req.body.query;
-		const { page, limit } = req.query;
-		const response = await emailListModel
-			.find(query)
-			.limit(limit * 1)
-			.skip((page - 1) * limit)
-			.sort({ createdAt: -1 });
-		const total = await response.find(query).countDocuments();
-		const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-		res.json({
-			message: 'Filtered email list',
-			total,
-			pages,
-			status: 200,
-			response,
-		});
-	} catch (error) {
-		res.json({ status: 404, message: error });
-	}
+exports.getByEmail = async (req, res) => {
+	await emailListModel.find({ email: req.body.email }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
 };
 
 exports.create = async (req, res) => {
