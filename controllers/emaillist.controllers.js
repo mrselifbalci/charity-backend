@@ -26,7 +26,7 @@ exports.getEmailListById = async (req, res) => {
 	});
 };
 
-exports.getByEmail = async (req, res) => {
+exports.getEmailListByEmail = async (req, res) => {
 	await emailListModel.find({ email: req.body.email }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
