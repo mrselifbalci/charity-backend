@@ -26,7 +26,9 @@ exports.getSingleNews = async (req, res) => {
 		} else {
 			res.json({ status: 200, data });
 		}
-	});
+	})
+		.populate('mediaId', 'url title alt')
+		.populate('quoteAuthorMedia', 'url title alt');
 };
 
 exports.getNewsByType = async (req, res) => {
