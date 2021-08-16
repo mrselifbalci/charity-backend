@@ -10,36 +10,22 @@ exports.getAll = async (req, res) => {
 			.skip((page - 1) * limit);
 		const total = await MessagesModel.find().count();
 		const pages = limit === undefined ? 1 : Math.ceil(total / limit);
-		res.json({ total: total, pages, status: 200, response });
+		res.json({ total, pages, status: 200, response });
 	} catch (error) {
 		res.status(500).json(error);
 	}
 };
 
 exports.create = async (req, res) => {
-	const {
-		firstname,
-		lastname,
-		subject,
-		content,
-		email,
-		phoneNumber,
-		isActive,
-		isRead,
-		isDeleted,
-		isReplied,
-	} = req.body;
+	const { firstname, lastname, message, email, isActive, isRead, isDeleted } = req.body;
 	const newPost = await new MessagesModel({
 		firstname,
 		lastname,
-		subject,
-		content,
+		message,
 		email,
-		phoneNumber,
 		isActive,
 		isRead,
 		isDeleted,
-		isReplied,
 	});
 	newPost
 		.save()
@@ -57,8 +43,8 @@ exports.getSingleMessage = async (req, res) => {
 	});
 };
 
-exports.getMessageBySubject = async (req, res) => {
-	await MessagesModel.find({ subject: req.params.subject }, (err, data) => {
+exports.getMessageByEmail = async (req, res) => {
+	await MessagesModel.find({ email: req.params.email }, (err, data) => {
 		if (err) {
 			res.json({ message: err });
 		} else {
