@@ -199,3 +199,14 @@ exports.removeNews = async (req, res) => {
 		)
 		.catch((err) => res.json({ status: 404, message: err }));
 };
+
+
+exports.searchNews = async (req, res) => {
+	await NewsModel.find({title: {$regex: new RegExp(req.params.query, "i")}}, (err, data) => {
+		if(err) {
+			res.json({status: false, message:err})
+		} else {
+			res.json({status: true, data})
+		}
+	}).populate('mediaId', 'url alt')
+}
