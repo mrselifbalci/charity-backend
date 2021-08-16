@@ -61,6 +61,12 @@ exports.updateMessage = async (req, res) => {
 
 exports.removeSingleMessage = async (req, res) => {
 	await MessagesModel.findByIdAndDelete({ _id: req.params.id })
-		.then((data) => res.json(data))
+		.then((data) =>
+			res.json({
+				status: 200,
+				message: 'The message is deleted successfully',
+				data,
+			})
+		)
 		.catch((err) => res.json({ message: err }));
 };
