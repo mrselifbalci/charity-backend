@@ -208,5 +208,5 @@ exports.searchNews = async (req, res) => {
 		} else {
 			res.json({status: true, data})
 		}
-	})
+	}).populate('mediaId', 'url alt')
 }

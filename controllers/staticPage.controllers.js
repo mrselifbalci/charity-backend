@@ -30,7 +30,7 @@ exports.createPage = async (req, res) => {
 
 			newImage.save();
 
-			const { name, content, isActive, isDeleted } = req.body;
+			const { name, content, isActive, isDeleted, title, subTitle1, subTitle2, content2 } = req.body;
 
 			const newPage = await new StaticPageModel({
 				name,
@@ -38,6 +38,10 @@ exports.createPage = async (req, res) => {
 				mediaId: newImage._id,
 				isActive,
 				isDeleted,
+				title, 
+				subTitle1, 
+				subTitle2, 
+				content2
 			});
 			newPage
 				.save()
@@ -52,7 +56,7 @@ exports.createPage = async (req, res) => {
 		};
 		await S3.uploadNewMedia(req, res, data);
 	} else if (req.body.mediaId) {
-		const { name, content, isActive, isDeleted, mediaId } = req.body;
+		const { name, content, isActive, isDeleted, mediaId, title, subTitle1, subTitle2, content2 } = req.body;
 
 		const newPage = await new StaticPageModel({
 			name,
@@ -60,6 +64,10 @@ exports.createPage = async (req, res) => {
 			mediaId,
 			isActive,
 			isDeleted,
+			title, 
+			subTitle1, 
+			subTitle2, 
+			content2
 		});
 		newPage
 			.save()
@@ -82,7 +90,7 @@ exports.createPage = async (req, res) => {
 
 			newImage.save();
 
-			const { name, content, isActive, isDeleted } = req.body;
+			const { name, content, isActive, isDeleted, title, subTitle1, subTitle2, content2 } = req.body;
 
 			const newPage = await new StaticPageModel({
 				name,
@@ -90,6 +98,10 @@ exports.createPage = async (req, res) => {
 				mediaId: newImage._id,
 				isActive,
 				isDeleted,
+				title, 
+				subTitle1, 
+				subTitle2, 
+				content2
 			});
 			newPage
 				.save()
