@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const GetInvolvedModel = require('../model/Getinvolved.model');
 const MediaModel = require('../model/Media.model');
 const S3 = require('../config/aws.s3.config');
+const { InsufficientStorage } = require('http-errors');
 
 exports.getAll = async (req, res) => {
-	try { 
+	try {
 		const { page = 1, limit } = req.query;
 		const response = await GetInvolvedModel.find()
 			.limit(limit * 1)
@@ -19,6 +20,16 @@ exports.getAll = async (req, res) => {
 	}
 };
 
+exports.getByTitle = async (req, res) => {
+	await GetInvolvedModel.find({ title: req.params.title }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
 exports.create = async (req, res) => {
 	if (req.files) {
 		const data = async (data) => {
@@ -31,19 +42,28 @@ exports.create = async (req, res) => {
 
 			newImage.save();
 
-			const { title, content,moreInfoLinkText,moreInfoContent, isActive, isDeleted,buttonText } = req.body;
+			const {
+				title,
+				content,
+				moreInfoLinkText,
+				moreInfoContent,
+				isActive,
+				isDeleted,
+				buttonText,
+			} = req.body;
 
 			const newInvolved = await new GetInvolvedModel({
 				title,
 				content,
 				mediaId: newImage._id,
-                moreInfoLinkText,
-                moreInfoContent,
+				moreInfoLinkText,
+				moreInfoContent,
 				buttonText,
 				isActive,
 				isDeleted,
 			});
-			newInvolved.save()
+			newInvolved
+				.save()
 				.then((response) =>
 					res.json({
 						status: 200,
@@ -55,14 +75,23 @@ exports.create = async (req, res) => {
 		};
 		await S3.uploadNewMedia(req, res, data);
 	} else if (req.body.mediaId) {
-		const { title, content,  moreInfoLinkText,moreInfoContent,isActive, isDeleted, mediaId,buttonText } = req.body;
+		const {
+			title,
+			content,
+			moreInfoLinkText,
+			moreInfoContent,
+			isActive,
+			isDeleted,
+			mediaId,
+			buttonText,
+		} = req.body;
 
 		const newInvolved = await new GetInvolvedModel({
 			title,
 			content,
 			mediaId,
-            moreInfoLinkText,
-            moreInfoContent,
+			moreInfoLinkText,
+			moreInfoContent,
 			buttonText,
 			isActive,
 			isDeleted,
@@ -88,14 +117,22 @@ exports.create = async (req, res) => {
 
 			newImage.save();
 
-			const { title, content, moreInfoLinkText,moreInfoContent, isActive, isDeleted,buttonText } = req.body;
+			const {
+				title,
+				content,
+				moreInfoLinkText,
+				moreInfoContent,
+				isActive,
+				isDeleted,
+				buttonText,
+			} = req.body;
 
 			const newPage = await new StaticPageModel({
 				title,
 				content,
 				mediaId: newImage._id,
-                moreInfoLinkText,
-                moreInfoContent,
+				moreInfoLinkText,
+				moreInfoContent,
 				buttonText,
 				isActive,
 				isDeleted,
@@ -121,8 +158,7 @@ exports.getSingleInvolve = async (req, res) => {
 		} else {
 			res.json({ data });
 		}
-	})
-	.populate('mediaId', 'url title alt');
+	}).populate('mediaId', 'url title alt');
 };
 exports.updateGetInvolved = async (req, res) => {
 	if (req.files) {
@@ -147,7 +183,8 @@ exports.updateGetInvolved = async (req, res) => {
 						await S3.updateMedia(req, res, media.mediaKey, data);
 					}
 				);
-				const { title, content,moreInfoLinkText,moreInfoContent,buttonText } = req.body;
+				const { title, content, moreInfoLinkText, moreInfoContent, buttonText } =
+					req.body;
 
 				await GetInvolvedModel.findByIdAndUpdate(
 					{ _id: req.params.id },
@@ -155,8 +192,8 @@ exports.updateGetInvolved = async (req, res) => {
 						$set: {
 							title,
 							content,
-                            moreInfoLinkText,
-                            moreInfoContent,
+							moreInfoLinkText,
+							moreInfoContent,
 							buttonText,
 							mediaId: involved.mediaId,
 							isActive: !req.body.isActive ? true : req.body.isActive,
@@ -178,7 +215,14 @@ exports.updateGetInvolved = async (req, res) => {
 	} else {
 		await GetInvolvedModel.findById({ _id: req.params.id })
 			.then(async (involved) => {
-				const { title, content, mediaId,moreInfoLinkText,moreInfoContent,buttonText } = req.body;
+				const {
+					title,
+					content,
+					mediaId,
+					moreInfoLinkText,
+					moreInfoContent,
+					buttonText,
+				} = req.body;
 
 				await GetInvolvedModel.findByIdAndUpdate(
 					{ _id: req.params.id },
@@ -186,8 +230,8 @@ exports.updateGetInvolved = async (req, res) => {
 						$set: {
 							title,
 							content,
-                            moreInfoLinkText,
-                            moreInfoContent,
+							moreInfoLinkText,
+							moreInfoContent,
 							buttonText,
 							mediaId: !mediaId ? staticpage.mediaId : mediaId,
 							isActive: !req.body.isActive ? true : req.body.isActive,
@@ -208,7 +252,6 @@ exports.updateGetInvolved = async (req, res) => {
 			.catch((err) => res.json({ status: 404, message: err }));
 	}
 };
-
 
 exports.deleteGetInvolved = async (req, res) => {
 	await GetInvolvedModel.findById({ _id: req.params.id })
