@@ -14,3 +14,22 @@ exports.getAll = async (req, res) => {
 		res.json({ status: 404, message: error });
 	}
 };
+
+exports.create = async (req, res) => {
+	const { address, phone, socialMedia, isActive, isDeleted } = req.body;
+	const newCompanyInfo = await new CompanyInfoModel({
+		address,
+		phone,
+		socialMedia,
+		isActive,
+		isDeleted,
+	});
+
+	newCompanyInfo.save().then((response) =>
+		res.json({
+			status: 200,
+			message: 'New company info is created successfully',
+			response,
+		})
+	);
+};
