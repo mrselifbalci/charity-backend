@@ -15,6 +15,16 @@ exports.getAll = async (req, res) => {
 	}
 };
 
+exports.getById = async (req, res) => {
+	await CompanyInfoModel.findById({ _id: req.params.id }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ status: 200, data });
+		}
+	});
+};
+
 exports.create = async (req, res) => {
 	const { address, phone, socialMedia, isActive, isDeleted } = req.body;
 	const newCompanyInfo = await new CompanyInfoModel({
@@ -32,4 +42,28 @@ exports.create = async (req, res) => {
 			response,
 		})
 	);
+};
+
+exports.update = async (req, res) => {
+	await CompanyInfoModel.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body })
+		.then((response) =>
+			res.json({
+				status: 200,
+				message: 'Company info is updated successfully',
+				response,
+			})
+		)
+		.catch((err) => res.json({ status: 404, message: err }));
+};
+
+exports.delete = async (req, res) => {
+	await CompanyInfoModel.findByIdAndDelete({ _id: req.params.id })
+		.then((response) =>
+			res.json({
+				status: 200,
+				message: 'Company info is deleted successfully',
+				response,
+			})
+		)
+		.catch((err) => res.json({ status: 404, message: err }));
 };
