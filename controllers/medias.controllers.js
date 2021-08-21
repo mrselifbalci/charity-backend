@@ -21,41 +21,41 @@ exports.getAllMedia = async (req, res) => {
 };
 
 exports.createMedia = async (req, res) => {
-	const files = req.files.image;
-
-	const s3 = new AWS.S3({
-		accessKeyId: Access_Key,
-		secretAccessKey: Secret_Key,
-	});
-
-	const params = {
-		Bucket: Bucket_Name,
-		Key: req.files.image.name,
-		Body: req.files.image.data,
-		ContentType: 'image/JPG',
-	};
-
-	s3.upload(params, async (err, data) => {
-		if (err) {
-			res.json(err);
-		} else {
-			const newMedia = await new MediaModel({
-				url: data.Location,
-				title: req.body.title,
-				description: req.body.description,
-				isHomePage: req.body.isHomePage,
-				isActive: req.body.isActive,
-				isDeleted: req.body.isDeleted,
-			});
-
-			newMedia
-				.save()
-				.then((response) =>
-					res.json({ message: 'Media Created', status: true, response })
-				)
-				.catch((err) => res.json({ message: err, status: false }));
-		}
-	});
+	if(req.files) {
+		const s3 = new AWS.S3({
+			accessKeyId: Access_Key,
+			secretAccessKey: Secret_Key,
+		});
+	
+		const params = {
+			Bucket: Bucket_Name,
+			Key: req.files.image.name,
+			Body: req.files.image.data,
+			ContentType: 'image/JPG',
+		};
+	
+		s3.upload(params, async (err, data) => {
+			if (err) {
+				res.json(err);
+			} else {
+				const newMedia = await new MediaModel({
+					url: data.Location,
+					title: req.body.title,
+					description: req.body.description,
+					isHomePage: req.body.isHomePage,
+					isActive: req.body.isActive,
+					isDeleted: req.body.isDeleted,
+				});
+	
+				newMedia
+					.save()
+					.then((response) =>
+						res.json({ message: 'Media Created', status: true, response })
+					)
+					.catch((err) => res.json({ message: err, status: false }));
+			}
+		});
+	}
 };
 
 exports.getSingleMedia = async (req, res) => {
