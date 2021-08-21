@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const DonationSchema = new Schema(
 	{
 		userId: { type: Schema.Types.ObjectId, ref: 'user' },
+		firstname:String,
+		lastname:String,
 		type: String,
 		phone: String,
 		address: String,

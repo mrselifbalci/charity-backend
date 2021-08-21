@@ -101,6 +101,8 @@ exports.getDonationsByCity = async (req, res) => {
 exports.create = async (req, res) => {
 	const {
 		userId,
+		firstname,
+		lastname,
 		type,
 		phone,
 		address,
@@ -121,6 +123,8 @@ exports.create = async (req, res) => {
 
 	const newDonation = await new DonationModel({
 		userId,
+		firstname,
+		lastname,
 		type,
 		phone,
 		address,
