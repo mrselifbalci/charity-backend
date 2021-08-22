@@ -200,13 +200,21 @@ exports.removeNews = async (req, res) => {
 		.catch((err) => res.json({ status: 404, message: err }));
 };
 
-
 exports.searchNews = async (req, res) => {
-	await NewsModel.find({title: {$regex: new RegExp(req.params.query, "i")}}, (err, data) => {
-		if(err) {
-			res.json({status: false, message:err})
-		} else {
-			res.json({status: true, data})
+	const { page, limit } = req.query;
+	const total = await NewsModel.find().countDocuments();
+	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
+	await NewsModel.find(
+		{ title: { $regex: new RegExp(req.params.query, 'i') } },
+		(err, data) => {
+			if (err) {
+				res.json({ status: false, message: err });
+			} else {
+				res.json({ total, pages, status: true, data });
+			}
 		}
-	}).populate('mediaId', 'url alt')
-}
+	)
+		.limit(limit * 1)
+		.skip((page - 1) * limit)
+		.populate('mediaId', 'url alt');
+};

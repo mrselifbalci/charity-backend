@@ -9,6 +9,6 @@ router.get('/news/type/:type', newsControllers.getNewsByType);
 router.post('/news', newsControllers.create);
 router.put('/news/:id', newsControllers.updateNews);
 router.delete('/news/:id', newsControllers.removeNews);
-router.get('/news/query/:query', newsControllers.searchNews)
+router.get('/news/query/:query', newsControllers.searchNews);
 
 module.exports = router;
