@@ -5,13 +5,14 @@ const Schema = mongoose.Schema;
 const DonationSchema = new Schema(
 	{
 		userId: { type: Schema.Types.ObjectId, ref: 'user' },
-		firstname:String,
-		lastname:String,
+		firstname: String,
+		lastname: String,
 		type: String,
 		phone: String,
 		address: String,
 		city: String,
 		postcode: String,
+		email: String,
 		comments: String,
 		instructions: String,
 		type_of_goods: String,
