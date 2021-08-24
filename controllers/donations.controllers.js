@@ -98,6 +98,16 @@ exports.getDonationsByCity = async (req, res) => {
 		.sort({ createdAt: -1 });
 };
 
+exports.getSingleTimeDonation = async (req, res) => {
+	await DonationModel.findOne({ _id: req.params.id }, (err, data) => {
+		if (err) {
+			res.json({ status: 404, message: err });
+		} else {
+			res.json({ total, pages, status: 200, data });
+		}
+	});
+};
+
 exports.create = async (req, res) => {
 	const {
 		userId,
