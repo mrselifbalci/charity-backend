@@ -22,7 +22,7 @@ const DonationSchema = new Schema(
 		card_number: String,
 		security_code: Number,
 		amount: String,
-		expiration_date: Date,
+		expiration_date: String,
 		reason_to_join: String,
 		isActive: { type: Boolean, default: true },
 		isDeleted: { type: Boolean, default: false },
