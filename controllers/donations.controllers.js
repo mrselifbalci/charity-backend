@@ -49,7 +49,7 @@ exports.getDonationsByType = async (req, res) => {
 	const total = await DonationModel.find().countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
 
-	await DonationModel.find({ type: req.params.type }, (err, data) => {
+	await DonationModel.find({ type: {$regex:req.params.type} }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
