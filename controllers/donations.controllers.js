@@ -49,7 +49,7 @@ exports.getDonationsByType = async (req, res) => {
 	const total = await DonationModel.find().countDocuments();
 	const pages = limit === undefined ? 1 : Math.ceil(total / limit);
 
-	await DonationModel.find({ type: {$regex:req.params.type} }, (err, data) => {
+	await DonationModel.find({ type: { $regex: req.params.type } }, (err, data) => {
 		if (err) {
 			res.json({ status: 404, message: err });
 		} else {
@@ -96,16 +96,6 @@ exports.getDonationsByCity = async (req, res) => {
 		.skip((page - 1) * limit)
 		.populate('userId', 'firstname lastname email')
 		.sort({ createdAt: -1 });
-};
-
-exports.getSingleTimeDonation = async (req, res) => {
-	await DonationModel.findOne({ _id: req.params.id }, (err, data) => {
-		if (err) {
-			res.json({ status: 404, message: err });
-		} else {
-			res.json({ total, pages, status: 200, data });
-		}
-	});
 };
 
 exports.create = async (req, res) => {

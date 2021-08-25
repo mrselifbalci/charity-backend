@@ -9,7 +9,6 @@ router.get('/donations/userid/:userid', donationControllers.getDonationsByUserId
 router.get('/donations/type/:type', donationControllers.getDonationsByType);
 router.get('/donations/postcode/:postcode', donationControllers.getDonationsByPostcode);
 router.get('/donations/city/:city', donationControllers.getDonationsByCity);
-router.get('donations/type/:type/:id', donationControllers.getSingleTimeDonation);
 router.post('/donations', donationControllers.create);
 router.put('/donations/:id', donationControllers.update);
 router.delete('/donations/:id', donationControllers.delete);
