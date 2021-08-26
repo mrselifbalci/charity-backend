@@ -5,8 +5,8 @@ const FooterSchema = new Schema(
 	{
 		logo: String,
 		address: String,
-		email: { type: String },
-		phone: { type: String },
+		email: String,
+		phone: String,
 		socialMediaLinks: { type: Array },
 		copyright: { type: String },
 	},
