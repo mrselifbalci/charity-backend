@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const FooterSchema = new Schema(
 	{
-		logo: { type: String },
-		address: { type: String },
+		logo: String,
+		address: String,
 		email: { type: String },
 		phone: { type: String },
 		socialMediaLinks: { type: Array },
