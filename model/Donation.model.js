@@ -16,7 +16,7 @@ const DonationSchema = new Schema(
 		comments: String,
 		instructions: String,
 		type_of_goods: String,
-		number_of_pieces: Number,
+		number_of_pieces: String,
 		interested_in: String,
 		type_of_card: String,
 		card_number: String,
