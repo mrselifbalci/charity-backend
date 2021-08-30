@@ -7,8 +7,8 @@ const FooterSchema = new Schema(
 		address: String,
 		email: String,
 		phone: String,
-		socialMediaLinks: { type: Array },
-		copyright: { type: String },
+		socialMediaLinks: Array,
+		copyright: String,
 	},
 	{ timestamps: true }
 );
